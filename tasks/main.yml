@@ -1,0 +1,12 @@
+---
+# tasks file for ansible-role-reverse-proxy---
+          - name: Maj des paquets
+            apt:
+                    update_cache: yes
+                    upgrade: yes
+
+          - name: Installation Nginx
+            apt:
+                    name: nginx
+                    state: present
+            notify: Lancer Nginx
