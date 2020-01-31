@@ -1,6 +1,10 @@
 ---
-# handlers file for ansible-role-reverse-proxy---
-          - name: Lancer Nginx
-            service:
-                    name: nginx
-                    state: started
+# handlers file for ansible-role-reverse-proxy
+          - name: Créer un lien
+            file:
+                    src: /etc/nginx/sites-available/reverse-proxy.conf
+                    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+                    state: link
+
+          - name: Unlink default
+            shell: unlink /etc/nginx/sites-enabled/default
