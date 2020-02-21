@@ -1,10 +1,18 @@
 ---
 # handlers file for ansible-role-reverse-proxy
-          - name: Créer un lien
-            file:
-                    src: /etc/nginx/sites-available/reverse-proxy.conf
-                    dest: /etc/nginx/sites-enabled/reverse-proxy.conf
-                    state: link
+  - name: Unlink le fichier default
+    shell: unlink /etc/nginx/sites-enabled/default
+    listen: Configuration Nginx
 
-          - name: Unlink default
-            shell: unlink /etc/nginx/sites-enabled/default
+  - name: Copier fichier de configuration
+    copy:
+      src: reverse-proxy.conf.j2
+      dest: /etc/nginx/sites-available/reverse-proxy.conf
+    listen: Configuration Nginx
+
+  - name: Créer un lien symbolique
+    file:
+      src: /etc/nginx/sites-available/reverse-proxy.conf
+      dest: /etc/nginx/sites-enabled/reverse-proxy.conf
+      state: link
+    listen: Configuration Nginx

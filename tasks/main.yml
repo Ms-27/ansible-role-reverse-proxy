@@ -1,12 +1,28 @@
 ---
 # tasks file for ansible-role-reverse-proxy---
-          - name: Maj des paquets
-            apt:
-                    update_cache: yes
-                    upgrade: yes
+  - name: Apt fix
+    shell: apt -y --fix-broken install
 
-          - name: Installation Nginx
-            apt:
-                    name: nginx
-                    state: present
-            notify: Lancer Nginx
+  - name: Maj des paquets
+    apt:
+      update_cache: yes
+      upgrade: 'yes'
+
+  - name: Installation Nginx
+    apt:
+      name: nginx
+      state: present
+
+  - name: Lancer Nginx
+    service:
+      name: nginx
+      state: started
+    notify: Configuration Nginx
+
+  - name: Déclencher les handlers
+    meta: flush_handlers
+
+  - name: Relancer Nginx
+    service:
+      name: nginx
+      state: restarted
